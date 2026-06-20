@@ -59,7 +59,7 @@ export default function WhyJoinSection() {
           </div>
           <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl mb-6">
             Why Join{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-violet-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 via-blue-400 to-blue-600 bg-clip-text text-transparent">
               StartupForge?
             </span>
           </h2>

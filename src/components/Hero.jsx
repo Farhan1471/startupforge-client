@@ -11,9 +11,9 @@ export default function Hero() {
           {/* Chip */}
           <Chip
             variant="flat"
-            className="mb-6 border border-white/10 bg-white/5 text-white"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold tracking-wider text-zinc-300 uppercase mb-6"
           >
-            ✨ Introducing Version 3.0
+            ✨ Introducing Version 1.0
           </Chip>
 
           {/* Heading */}
@@ -26,8 +26,7 @@ export default function Hero() {
 
           {/* Description */}
           <p className="mx-auto mb-10 max-w-2xl text-lg text-zinc-400 md:text-xl">
-            Launch beautiful, scalable, and high-performance applications with
-            a streamlined development workflow designed for modern teams.
+            Find vetted, high-impact roles in pre-seed and seed-stage startups. Get direct access to founders, build your network, and accelerate your career.
           </p>
 
           {/* CTA */}
@@ -35,17 +34,10 @@ export default function Hero() {
             <Button
               size="lg"
               color="primary"
-              endContent={<ArrowRight width={18} height={18} />}
+              className="px-8 font-semibold flex items-center gap-2"
             >
               Get Started
-            </Button>
-
-            <Button
-              size="lg"
-              variant="bordered"
-              className="border-white/20 text-white"
-            >
-              View Demo
+              <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
         </div>

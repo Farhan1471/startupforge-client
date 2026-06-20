@@ -12,20 +12,20 @@ export default function StatsSection() {
         {
             id: 1,
             icon: <Briefcase className="h-5 w-5" />,
-            value: "50K",
-            label: "Active Jobs",
+            value: "100+",
+            label: "Active Opportunities",
         },
         {
             id: 2,
             icon: <Factory className="h-5 w-5" />,
-            value: "12K",
-            label: "Companies",
+            value: "10+",
+            label: "Startsups",
         },
         {
             id: 3,
             icon: <Magnifier className="h-5 w-5" />,
-            value: "2M",
-            label: "Job Seekers",
+            value: "5000+",
+            label: "Collaborator",
         },
         {
             id: 4,
@@ -61,10 +61,10 @@ export default function StatsSection() {
                     {stats.map((stat) => (
                         <div
                             key={stat.id}
-                            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition duration-300 hover:border-violet-500/30"
+                            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition duration-300 hover:border-blue-500/30"
                         >
                             {/* Card Glow */}
-                            <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white/10 blur-3xl transition duration-300 group-hover:bg-violet-500/20" />
+                            <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white/10 blur-3xl transition duration-300 group-hover:bg-blue-500/20" />
 
                             {/* Icon */}
                             <div className="relative z-10 text-white/90">
