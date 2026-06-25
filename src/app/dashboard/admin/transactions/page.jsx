@@ -45,8 +45,8 @@ const TransactionsPage = async () => {
         <Table.ScrollContainer>
           <Table.Content aria-label="Transactions collection" className="min-w-[800px]">
             <Table.Header>
+              <Table.Column>User Email</Table.Column>
               <Table.Column isRowHeader>Transaction ID</Table.Column>
-              <Table.Column>Email</Table.Column>
               <Table.Column>Plan</Table.Column>
               <Table.Column>Amount</Table.Column>
               <Table.Column>Status</Table.Column>
@@ -68,10 +68,10 @@ const TransactionsPage = async () => {
 
                   return (
                     <Table.Row key={id}>
+                      <Table.Cell className="font-medium">{payment.email}</Table.Cell>
                       <Table.Cell className="font-mono text-xs text-neutral-500 max-w-[200px] truncate">
                         {txId}
                       </Table.Cell>
-                      <Table.Cell className="font-medium">{payment.email}</Table.Cell>
                       <Table.Cell className="capitalize">{payment.planId}</Table.Cell>
                       <Table.Cell className="font-semibold text-neutral-800 dark:text-neutral-200">
                         ${parseFloat(payment.amount || 0).toFixed(2)}
