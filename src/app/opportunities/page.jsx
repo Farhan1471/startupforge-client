@@ -4,7 +4,7 @@ import OpportunityCard from "@/components/opportunities/OpportunityCard";
 import { getOpportunityByFilters } from "@/lib/api/opportunities";
 import React, { useState, useEffect } from "react";
 
-const WORK_TYPES = ["remote", "hybrid", "on-site"];
+const WORK_TYPES = ["remote", "hybrid", "onsite"];
 const ITEMS_PER_PAGE = 9;
 
 export default function Page() {
