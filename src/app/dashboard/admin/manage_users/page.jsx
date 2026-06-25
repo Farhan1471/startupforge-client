@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getUsers, updateUser } from "@/lib/api/users";
 import { Chip, Button } from "@heroui/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ManageUsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -11,7 +12,8 @@ const ManageUsersPage = () => {
         const fetchUsers = async () => {
             try {
                 const data = await getUsers();
-                setUsers(Array.isArray(data) ? data : []);
+                const nonAdmins = Array.isArray(data) ? data.filter(u => u.role !== "admin") : [];
+                setUsers(nonAdmins);
             } catch (error) {
                 console.error("Failed to fetch users:", error);
             } finally {
@@ -43,12 +45,11 @@ const ManageUsersPage = () => {
 
     if (loading) {
         return (
-            <div className="p-6 max-w-7xl mx-auto">
-                <p className="text-zinc-400">Loading users...</p>
+            <div className="min-h-[50vh] flex items-center justify-center">
+                <ClipLoader color="#6366f1" size={48} speedMultiplier={0.8} />
             </div>
         );
     }
-
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
