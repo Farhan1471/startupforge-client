@@ -2,6 +2,7 @@
 
 import { Button, Chip } from "@heroui/react";
 import { ArrowRight } from "@gravity-ui/icons";
+import { motion } from "motion/react"
 
 export default function Hero() {
   return (
@@ -25,12 +26,10 @@ export default function Hero() {
           </h1>
 
           {/* Description */}
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-zinc-400 md:text-xl">
-            Find vetted, high-impact roles in pre-seed and seed-stage startups. Get direct access to founders, build your network, and accelerate your career.
-          </p>
+          <motion.p initial={{ scale: 0 }} animate={{ scale: 1 }}>Find vetted, high-impact roles in pre-seed and seed-stage startups. Get direct access to founders, build your network, and accelerate your career.</motion.p>
 
           {/* CTA */}
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-center gap-4 mt-4 sm:flex-row">
             <Button
               size="lg"
               color="primary"
