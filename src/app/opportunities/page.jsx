@@ -5,16 +5,23 @@ import { getOpportunityByFilters } from "@/lib/api/opportunities";
 import React, { useState, useEffect } from "react";
 
 const WORK_TYPES = ["remote", "hybrid", "on-site"];
+const ITEMS_PER_PAGE = 9;
 
 export default function Page() {
-  const [opportunities, setOpportunities] = useState([]);
+  const [allOpportunities, setAllOpportunities] = useState([]);
+
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const [selectedWorkTypes, setSelectedWorkTypes] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     getOpportunityByFilters({ search: query, workTypes: selectedWorkTypes }).then(
-      (data) => setOpportunities(data || [])
+      (data) => {
+        setAllOpportunities(data || []);
+        setCurrentPage(1);
+      }
     );
   }, [query, selectedWorkTypes]);
 
@@ -27,6 +34,12 @@ export default function Page() {
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
   };
+
+
+  const totalPages = Math.ceil(allOpportunities.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentItems = allOpportunities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 p-6 md:p-12 text-white">
@@ -72,12 +85,39 @@ export default function Page() {
         </div>
       </div>
 
+      {/* Cards for current page only */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-        {opportunities &&
-          opportunities.map((opportunityItem) => (
-            <OpportunityCard key={opportunityItem._id} opportunity={opportunityItem} />
-          ))}
+        {currentItems.map((opportunityItem) => (
+          <OpportunityCard key={opportunityItem._id} opportunity={opportunityItem} />
+        ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="max-w-7xl mx-auto mt-10 flex items-center justify-center gap-4">
+
+          <button
+            onClick={() => setCurrentPage((p) => p - 1)}
+            disabled={currentPage === 1}
+            className="px-5 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-medium hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Prev
+          </button>
+
+
+          <span className="text-zinc-400 text-sm">
+            Page <span className="text-white font-semibold">{currentPage}</span> of{" "}
+            <span className="text-white font-semibold">{totalPages}</span>
+          </span>
+
+          <button
+            onClick={() => setCurrentPage((p) => p + 1)}
+            disabled={currentPage === totalPages}
+            className="px-5 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-medium hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Next 
+          </button>
+        </div>
+      )}
     </div>
   );
 }

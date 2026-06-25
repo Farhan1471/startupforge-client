@@ -3,6 +3,7 @@ import { useSession } from "@/lib/auth-client";
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import OverviewCard from "./overview";
+import Graph from "@/components/graph";
 
 const AdminDashboardPage = () => {
     const { data: session, isPending } = useSession();
@@ -33,6 +34,8 @@ const AdminDashboardPage = () => {
                     <OverviewCard />
                 </div>
             </div>
+
+            <Graph />
         </div>
     );
 }
