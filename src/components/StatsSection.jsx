@@ -12,19 +12,19 @@ export default function StatsSection() {
         {
             id: 1,
             icon: <Briefcase className="h-5 w-5" />,
-            value: "100+",
+            value: "50+",
             label: "Active Opportunities",
         },
         {
             id: 2,
             icon: <Factory className="h-5 w-5" />,
-            value: "10+",
+            value: "20+",
             label: "Startsups",
         },
         {
             id: 3,
             icon: <Magnifier className="h-5 w-5" />,
-            value: "5000+",
+            value: "700+",
             label: "Collaborator",
         },
         {
