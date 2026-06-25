@@ -108,14 +108,14 @@ export default function Navbar() {
                   <div>
                       <Link
                           href="/auth/signin"
-                          className="rounded-full px-4 py-2 text-sm font-medium text-violet-400 transition hover:bg-violet-300 hover:text-white"
+                          className="rounded-full px-4 py-2 text-sm font-medium text-blue-400 transition hover:bg-blue-400 hover:text-white"
                         >
                           Login
                         </Link>
 
                         <Link
                           href="/auth/signup"
-                          className="rounded-full px-4 py-2 text-sm font-medium text-violet-400 transition hover:bg-violet-300 hover:text-white"
+                          className="rounded-full px-4 py-2 text-sm font-medium text-blue-400 transition hover:bg-blue-300 hover:text-white"
                         >
                           Register
                         </Link>
