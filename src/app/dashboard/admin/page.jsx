@@ -1,6 +1,7 @@
 'use client'
 import { useSession } from "@/lib/auth-client";
 import React from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 import OverviewCard from "./overview";
 
 const AdminDashboardPage = () => {
@@ -8,8 +9,8 @@ const AdminDashboardPage = () => {
 
     if (isPending) {
         return (
-            <div className="min-h-[50vh] flex items-center justify-center text-sm font-medium text-default-500">
-                Loading...
+            <div className="min-h-[50vh] flex items-center justify-center">
+                <ClipLoader color="#6366f1" size={48} speedMultiplier={0.8} />
             </div>
         );
     }
