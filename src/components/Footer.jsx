@@ -110,7 +110,7 @@ export default function Footer() {
                   href="#"
                   className="flex items-center gap-3 transition hover:text-white"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-violet-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-blue-600">
                     <LogoFacebook className="h-5 w-5" />
                   </div>
                   Facebook
@@ -122,7 +122,7 @@ export default function Footer() {
                   href="#"
                   className="flex items-center gap-3 transition hover:text-white"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-violet-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-blue-600">
                     <LogoGithub className="h-5 w-5" />
                   </div>
                   GitHub
@@ -134,7 +134,7 @@ export default function Footer() {
                   href="#"
                   className="flex items-center gap-3 transition hover:text-white"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-violet-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 transition hover:bg-blue-600">
                     <LogoLinkedin className="h-5 w-5" />
                   </div>
                   LinkedIn

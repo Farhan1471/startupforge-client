@@ -9,6 +9,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  socialProviders:{
+   google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,   
+   } 
+  },
   database: mongodbAdapter(db, {
     // Optional: if you don't provide a client, database transactions won't be enabled.
     client
@@ -16,8 +22,35 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
+        type: "string",
         default: "collaborator"
+      },
+      isBlocked: {
+        type: "boolean",
+        defaultValue: false,
+        input: false
+      },
+      bio: {
+        type: "string"
+      },
+      skills: {
+        type: "string"
       }
     }
-  }
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          return {
+            data: {
+              ...user,
+              role: user.role || "collaborator",
+              isBlocked: false,
+            },
+          };
+        },
+      },
+    },
+  },
 });

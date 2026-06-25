@@ -1,16 +1,40 @@
+import { getUserSession } from "@/lib/core/session";
 import { LayoutSideContentLeft, SquarePlus, PencilToSquare, Envelope, Gear, House, Factory, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 
-export function DashboardSidebar() {
-    const navItems = [
+export async function DashboardSidebar() {
+
+    const user = await getUserSession();
+
+    const collaboratorNavItems = [
+        { icon: House, href: "/dashboard/collaborator", label: "Overview" },
+        { icon: Envelope, href: "/dashboard/collaborator/applications", label: "My Application" },
+        { icon: Person, href: "/dashboard/collaborator/profile", label: "Profile" }
+    ];
+
+    const foundernavItems = [
         { icon: House, href: "/dashboard/founder", label: "Overview" },
         { icon: Factory, href: "/dashboard/founder/startup", label: "My Startup" },
         { icon: SquarePlus, href: "/dashboard/founder/opportunity/add", label: "Add Opportunity" },
         { icon: PencilToSquare, href: "/dashboard/founder/opportunity", label: "Manage Opportunities" },
-        { icon: Envelope, href: "/messages", label: "Applications" },   
-
+        { icon: Envelope, href: "/dashboard/founder/applications", label: "Applications" } 
     ];
+
+    const adminnavItems = [
+        { icon: House, href: "/dashboard/admin", label: "Overview" },
+        { icon: PencilToSquare, href: "/dashboard/admin/manage_users", label: "Manage Users" },
+        { icon: PencilToSquare, href: "/dashboard/admin/manage_startups", label: "Manage Startups" },
+        { icon: Envelope, href: "/dashboard/admin/transactions", label: "Transactions" } 
+    ];
+
+    const navLinksMap = {
+        collaborator: collaboratorNavItems,
+        founder: foundernavItems,
+        admin: adminnavItems
+    }
+
+    const navItems = navLinksMap[user?.role || 'collaborator'];
 
     const navContent = <nav className="flex flex-col gap-1">
         {navItems.map((item) => (

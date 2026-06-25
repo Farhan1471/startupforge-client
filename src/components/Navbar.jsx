@@ -4,14 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { useSession, signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
+
+  const router = useRouter();
+  const pathName = usePathname();
+
   const user = session?.user;
 
   const handleSignOut = async () => {
     await signOut();
+
+    const publicRoutes = ["/", "/startups", "/opportunities"];
+
+    if (!publicRoutes.includes(pathName)) {
+      router.push("/");
+    }
+    else {
+      router.refresh();
+    }
+
 
   }
 
@@ -25,6 +41,21 @@ export default function Navbar() {
       href: "/opportunities",
     },
   ];
+
+  const dashboardLinks = {
+    collaborator: '/dashboard/collaborator',
+    founder: '/dashboard/founder',
+    admin: '/dashboard/admin'
+  }
+
+  if (user?.email) {
+    navLinks.push(
+      {
+        label: 'Dashboard',
+        href: dashboardLinks[user?.role || 'collaborator']
+      }
+    )
+  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0B0F]/80 backdrop-blur-xl">
@@ -70,24 +101,26 @@ export default function Navbar() {
                   <>
                     Hi, {user.name}!
                     <Button onClick={handleSignOut}
-                      variant="ghost">Sign Out</Button>
+                      variant="ghost">Logout</Button>
                   </>
                   :
-                  <Link
-                    href="/auth/signin"
-                    className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
-                  >
-                    Sign In
-                  </Link>}
+                  
+                  <div>
+                      <Link
+                          href="/auth/signin"
+                          className="rounded-full px-4 py-2 text-sm font-medium text-violet-400 transition hover:bg-violet-300 hover:text-white"
+                        >
+                          Login
+                        </Link>
 
-              <Button
-                as={Link}
-                href="/register"
-                radius="lg"
-                className="h-11 bg-white px-6 text-sm font-semibold text-black hover:bg-gray-200"
-              >
-                Get Started
-              </Button>
+                        <Link
+                          href="/auth/signup"
+                          className="rounded-full px-4 py-2 text-sm font-medium text-violet-400 transition hover:bg-violet-300 hover:text-white"
+                        >
+                          Register
+                        </Link>
+                    </div>
+                  }
             </div>
           </div>
 

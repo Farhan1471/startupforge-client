@@ -1,6 +1,10 @@
 import { serverFetch } from "../core/server";
 import { getUserSession } from "../core/session";
 
+export const getStartups = async () => {
+    return serverFetch(`api/startups`);
+}
+
 export const getFounderStartup = async (founderId) => {
     return serverFetch(`api/my/startups?founderId=${founderId}`);
 }

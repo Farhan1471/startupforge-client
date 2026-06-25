@@ -1,29 +1,38 @@
 'use client'
-import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { useSession } from "@/lib/auth-client";
-import { Briefcase, CircleCheck, Persons, Thunderbolt } from "@gravity-ui/icons";
 import React from "react";
+import OverviewCardFounder from "./overview";
 
 const FounderDashboardPage = () => {
     const { data: session, isPending } = useSession();
 
-    if(isPending){
-        return <div>Loading...</div>;  
+    if (isPending) {
+        return (
+            <div className="min-h-[50vh] flex items-center justify-center text-sm font-medium text-default-500">
+                Loading...
+            </div>
+        );  
     }
-
-     const founderStats = [
-        { title: "Total Opportunities", value: "20", icon: Briefcase },
-        { title: "Total Applicants", value: "847", icon: Persons },
-        { title: "Active Opportunities", value: "15", icon: Thunderbolt },
-        { title: "Opportunities Closed", value: "5", icon: CircleCheck },
-    ];
 
     const user = session?.user;
     console.log("Session data in Founder Dashboard: ", session);
+
     return (
-        <div className="p-4 space-y-6">
-            <p className="text-xl font-bold">Welcome Back, {user?.name}</p>
-            <DashboardStats statsData={founderStats}/>
+        <div className="p-4 md:p-8 space-y-8 max-w-6xl mx-auto w-full">
+            <div className="space-y-1">
+                <h1 className="text-2xl font-bold tracking-tight">
+                    Welcome Back, {user?.name || "Founder"}
+                </h1>
+                <p className="text-small text-default-500">
+                    Here is an overview of your workspace activities.
+                </p>
+            </div>
+
+            <div className="flex justify-center w-full">
+                <div className="w-full">
+                    <OverviewCardFounder userId={user?.id} />
+                </div>
+            </div>
         </div>
     );
 }

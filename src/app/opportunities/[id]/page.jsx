@@ -117,11 +117,10 @@ const Page = async ({ params }) => {
                                     {opportunity.startupName}
                                 </span>
                                 {opportunity.status && (
-                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
-                                        opportunity.status === 'active'
+                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${opportunity.status === 'active'
                                             ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30'
                                             : 'text-zinc-400 bg-white/5 border-white/10'
-                                    } capitalize`}>
+                                        } capitalize`}>
                                         {opportunity.status}
                                     </span>
                                 )}
@@ -152,11 +151,10 @@ const Page = async ({ params }) => {
                                     </span>
                                 )}
                                 {opportunity.deadline && (
-                                    <span className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border ${
-                                        isUrgent
+                                    <span className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border ${isUrgent
                                             ? 'text-amber-300 bg-amber-400/10 border-amber-400/30'
                                             : 'text-zinc-300 bg-white/5 border-white/10'
-                                    }`}>
+                                        }`}>
                                         <Clock className="w-3.5 h-3.5" />
                                         {daysLeft}
                                     </span>
@@ -205,20 +203,13 @@ const Page = async ({ params }) => {
                     </section>
 
                     {/* Apply Card */}
-                    <div className="relative rounded-2xl overflow-hidden">
-                        <div className="relative p-6 space-y-6">
-                            <Button
-                                as={Link}
-                                href={`/opportunities/${id}/apply`}
-                                color="primary"
-                                size="lg"
-                                className="w-full font-semibold py-6 rounded-xl shadow-lg shadow-blue-900/30 transition-all hover:shadow-blue-800/50 hover:scale-[1.02]"
-                                endContent={<ArrowUpRight className="w-4 h-4" />}
-                            >
-                                Apply For This Role
-                            </Button>
-                        </div>
-                    </div>
+                    <Link
+                        href={`/opportunities/${id}/apply`}
+                        className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-800 no-underline hover:no-underline transition-all"
+                        endContent={<ArrowUpRight className="w-4 h-4" />}
+                    >
+                        Join Team
+                    </Link>
                 </div>
 
                 {/*  RIGHT: Sidebar  */}

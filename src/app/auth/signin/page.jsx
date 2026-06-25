@@ -3,12 +3,17 @@
 import { useState } from "react";
 import { Card, Button, Link, TextField, Label, InputGroup, Input } from "@heroui/react";
 import { Eye, EyeSlash, At, ShieldKeyhole } from "@gravity-ui/icons";
-import { signIn } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SigninPage() {
     // Form fields
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get("redirect") || "/";
 
     // UI States
     const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +34,7 @@ export default function SigninPage() {
             const { data, error: authError } = await signIn.email({
                 email,
                 password,
-                callbackURL: "/" 
+                
             });
 
             if (authError) {
@@ -38,6 +43,7 @@ export default function SigninPage() {
                 setSuccess("Signed in successfully! Redirecting...");
                 setEmail("");
                 setPassword("");
+                router.push(redirectTo)
             }
         } catch (err) {
             setError("An unexpected network error occurred.");
@@ -45,6 +51,13 @@ export default function SigninPage() {
             setIsLoading(false);
         }
     };
+
+    // Google Login
+    const handleGoogleLogin = async () => {
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
@@ -117,13 +130,30 @@ export default function SigninPage() {
                         isLoading={isLoading}
                         isDisabled={isLoading}
                     >
-                        Sign In
+                        Login
                     </Button>
+
+                    <div className="space-y-4">
+                        <Button
+                            onPress={handleGoogleLogin}
+                            variant="bordered"
+                            className="w-full h-12 font-bold rounded-2xl border border-slate-300 dark:border-zinc-700 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors gap-3"
+                        >
+                            <img
+                                width={20}
+                                height={20}
+                                src="https://www.google.com/favicon.ico"
+                                className="w-5 h-5"
+                                alt="Google"
+                            />
+                            Sign in with Google
+                        </Button>
+                    </div>
 
                     {/* Navigation Option */}
                     <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                         New to HireLoop?{" "}
-                        <Link href="/auth/signup" className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
+                        <Link href={`/auth/signup?redirect=${redirectTo}`} className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
                             Create an account
                         </Link>
                     </div>

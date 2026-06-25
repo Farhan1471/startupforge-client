@@ -17,9 +17,11 @@ import {
     Factory,
     ArrowRight,
     Pencil,
+    TrashBin,
     ArrowUpToLine
 } from "@gravity-ui/icons";
-import { createStartup } from "@/lib/actions/startups";
+import { createStartup, updateStartup, deleteStartup } from "@/lib/actions/startups";
+import DeleteStartupModal from "@/components/DeleteStartupModal";
 
 const textInputClass =
     "w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-lg px-3 py-2.5 outline-none placeholder:text-zinc-600 focus:border-zinc-700 transition";
@@ -31,6 +33,8 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
     const [startup, setStartup] = useState(founderStartup);
     const [isEditing, setIsEditing] = useState(false);
     const [errors, setErrors] = useState({});
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const [logoUrl, setLogoUrl] = useState("");
     const [isUploading, setIsUploading] = useState(false);
@@ -95,14 +99,15 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
         const fundingStage = formData.get("fundingStage");
         const founderEmail = formData.get("founderEmail");
         const description = formData.get("description");
+        const teamSizeNeeded = formData.get("teamSizeNeeded");
 
-        // simple validation
         const newErrors = {};
 
         if (!name) newErrors.name = "Startup name is required";
         if (!industry) newErrors.industry = "Industry is required";
         if (!fundingStage) newErrors.fundingStage = "Funding stage is required";
         if (!founderEmail) newErrors.founderEmail = "Founder email is required";
+        if (!teamSizeNeeded) newErrors.teamSizeNeeded = "Team size is required";
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -115,39 +120,40 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
             fundingStage,
             founderEmail,
             description,
+            team_size_needed: teamSizeNeeded,
             logo: logoUrl || startup?.logo || "",
-            status: startup ? startup.status : "Pending",
-            founderId: founder?.id
+            status: startup?.status || "Pending",
+            founderId: founder?.id,
+            plan: "free",
+            founder_name: founder?.name
         };
-        // const newStartupData = {
-        //     startup_name, 
-        //     industry,
-        //     funding_stage,
-        //     founder_email,
-        //     description,
-        //     logo: logoUrl || startup?.logo || "",
-        //     status: startup ? startup.status : "Pending",
-        //     founderId: founder?.id || founder?._id 
-        // }; 
-  
-        setStartup(newStartupData);
- 
+
         console.log("Submitted Startup Profile Data:", newStartupData);
 
-        const payload = await createStartup(newStartupData);
-
-        if (payload.insertedId) {
-            toast.success("Startup profile created successfully!");
-        }
-
-
-        setErrors({});
-        setIsEditing(false);
-    };
-
-
-
-
+        let payload;
+        if (startup?._id) {
+            payload = await updateStartup(startup._id, newStartupData);
+            if (payload.modifiedCount > 0) {
+                setStartup({ ...newStartupData, _id: startup._id });
+                toast.success("Startup profile updated successfully!");
+                setErrors({});
+                setIsEditing(false);
+            } else {
+                toast.error("Failed to update startup. Please try again.");
+            }
+        } else {
+            payload = await createStartup(newStartupData);
+            if (payload.insertedId) {
+                const savedStartup = { ...newStartupData, _id: payload.insertedId };
+                setStartup(savedStartup);
+                toast.success("Startup profile created successfully!");
+                setErrors({});
+                setIsEditing(false);
+            } else {
+                toast.error("Failed to save startup. Please try again.");
+            }
+        };
+    }
 
 
     if (!startup?._id && !isEditing) {
@@ -171,7 +177,7 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
 
     if (startup && !isEditing) {
         return (
-            <div className="max-w-3xl mx-auto my-8 bg-zinc-950 border border-zinc-900 rounded-xl p-8 space-y-6">
+            <div className="relative max-w-3xl mx-auto my-8 bg-zinc-950 border border-zinc-900 rounded-xl p-8 space-y-6">
 
                 <div className="flex justify-between items-center">
                     <div className="flex gap-4 items-center">
@@ -201,9 +207,15 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
                         </div>
                     </div>
 
-                    <Button variant="bordered" onPress={() => setIsEditing(true)}>
-                        <Pencil size={14} /> Edit
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant="bordered" onPress={() => setIsEditing(true)}>
+                            <Pencil size={14} /> Edit
+                        </Button>
+
+                        <Button color="danger" variant="bordered" onPress={() => setShowDeleteModal(true)}>
+                            <TrashBin size={14} /> Delete
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -216,12 +228,42 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
                         <p className="text-zinc-500 text-xs">Founder Email</p>
                         <p className="text-white">{startup.founderEmail}</p>
                     </div>
+
+                    <div className="bg-zinc-900/30 p-3 rounded col-span-2 lg:col-span-1">
+                        <p className="text-zinc-500 text-xs">Team Size Needed</p>
+                        <p className="text-white">{startup.team_size_needed || "Not specified"}</p>
+                    </div>
                 </div>
 
                 {startup.description && (
                     <p className="text-zinc-300 text-sm leading-relaxed">
                         {startup.description}
                     </p>
+                )}
+
+                {showDeleteModal && (
+                    <DeleteStartupModal
+                        startupName={startup.name}
+                        isDeleting={isDeleting}
+                        onCancel={() => setShowDeleteModal(false)}
+                        onConfirm={async () => {
+                            setIsDeleting(true);
+                            try {
+                                const result = await deleteStartup(startup._id);
+                                if (result?.deletedCount > 0) {
+                                    toast.success("Startup deleted successfully.");
+                                    setStartup(null);
+                                    setShowDeleteModal(false);
+                                } else {
+                                    toast.error("Failed to delete. Please try again.");
+                                }
+                            } catch {
+                                toast.error("Something went wrong.");
+                            } finally {
+                                setIsDeleting(false);
+                            }
+                        }}
+                    />
                 )}
             </div>
         );
@@ -262,9 +304,9 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
                             {errors.fundingStage && <FieldError>{errors.fundingStage}</FieldError>}
                         </TextField>
 
-                        <TextField name="founderEmail" defaultValue={founderEmail}>
+                        <TextField isReadOnly name="founderEmail" defaultValue={founderEmail}>
                             <Label className="text-zinc-400">Founder Email</Label>
-                            <Input className={textInputClass} />
+                            <Input className={`${textInputClass} opacity-60 pointer-events-none bg-zinc-900/20 select-none`} tabIndex={-1} />
                             {errors.founderEmail && <FieldError>{errors.founderEmail}</FieldError>}
                         </TextField>
                     </div>
@@ -309,7 +351,11 @@ export default function StartupProfile({ founder, founderEmail, founderStartup }
                         </label>
                     </div>
 
-                    {/* ROW 4 */}
+                    <TextField name="teamSizeNeeded" defaultValue={startup?.team_size_needed || ""}>
+                        <Label className="text-zinc-400">Team Size Needed</Label>
+                        <Input type="number" min="1" className={textInputClass} placeholder="e.g. 5" />
+                        {errors.teamSizeNeeded && <FieldError>{errors.teamSizeNeeded}</FieldError>}
+                    </TextField>
                     <TextField name="description" defaultValue={startup?.description || ""}>
                         <Label className="text-zinc-400">Description</Label>
                         <TextArea rows={3} className={textAreaClass} />

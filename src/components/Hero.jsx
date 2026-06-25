@@ -34,7 +34,7 @@ export default function Hero() {
             <Button
               size="lg"
               color="primary"
-              className="px-8 font-semibold flex items-center gap-2"
+              className="px-8 font-semibold flex items-center gap-2 hover:cursor-pointer"
             >
               Get Started
               <ArrowRight className="w-5 h-5" />
