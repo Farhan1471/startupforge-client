@@ -1,46 +1,54 @@
 import React, { useEffect, useRef } from "react";
-// Import from 'chart.js/auto' as described in the Chart.js Integration documentation
 import Chart from "chart.js/auto";
+import { getOpportunity } from "../lib/api/opportunities";
 
 const Graph = () => {
-    const chartRef = useRef(null); // Ref to hold the canvas element
-    const chartInstance = useRef(null); // Ref to keep track of the Chart instance
+    const chartRef = useRef(null);
+    const chartInstance = useRef(null);
 
     useEffect(() => {
-        // Ensure the canvas element exists
-        if (chartRef.current) {
-            const ctx = chartRef.current.getContext("2d");
+        getOpportunity().then((data) => {
+            const opportunities = Array.isArray(data) ? data : data?.opportunities ?? [];
 
-            // Avoid duplicating charts on re-renders by destroying the old one first
-            if (chartInstance.current) {
-                chartInstance.current.destroy();
-            }
+            const workTypeCounts = {};
+            opportunities.forEach((opp) => {
+                const wt = opp.workType || "Unknown";
+                workTypeCounts[wt] = (workTypeCounts[wt] || 0) + 1;
+            });
 
-            // Create the new chart instance
-            chartInstance.current = new Chart(ctx, {
-                type: "bar", // Chart type from the guide
-                data: {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                    datasets: [
-                        {
-                            label: "# of Votes",
-                            data: [12, 19, 3, 5, 2, 3],
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
+            const labels = Object.keys(workTypeCounts);
+            const counts = Object.values(workTypeCounts);
+
+            if (chartRef.current) {
+                const ctx = chartRef.current.getContext("2d");
+                if (chartInstance.current) {
+                    chartInstance.current.destroy();
+                }
+
+                chartInstance.current = new Chart(ctx, {
+                    type: "bar", 
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "# of Opportunities",
+                                data: counts,
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
                         },
                     },
-                },
-            });
-        }
+                });
+            }
+        });
 
-        // Cleanup function to destroy the chart instance when the component unmounts
         return () => {
             if (chartInstance.current) {
                 chartInstance.current.destroy();
@@ -51,7 +59,6 @@ const Graph = () => {
     return (
         <div>
             <h1>Graph</h1>
-            {/* Chart.js requires a container (like a div) to handle responsiveness properly */}
             <div style={{ width: "600px", height: "400px" }}>
                 <canvas ref={chartRef}></canvas>
             </div>
