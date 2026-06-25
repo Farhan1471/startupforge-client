@@ -99,7 +99,7 @@ export default function Navbar() {
               {
                 user ?
                   <>
-                    Hi, {user.name}!
+                    Hi,<span className="font-semibold text-blue-500">{user.name}!</span>
                     <Button onClick={handleSignOut}
                       variant="ghost">Logout</Button>
                   </>
