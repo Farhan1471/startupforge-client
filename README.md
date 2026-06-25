@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StartupForge
 
-## Getting Started
+## About the Project
+StartupForge is a platform that connects startup founders with talented people. Founders can post opportunities and manage applications, while collaborators can discover roles and apply easily through a simple and modern interface.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Main Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Role-Based Dashboards** — Separate dashboards for founders, collaborators, and admins.
+- **Startup Listings** — Founders can create and manage their startups.
+- **Opportunity Board** — Founders post opportunities. Collaborators can search by title and filter by work type (remote, hybrid, on-site), with pagination built in.
+- **Application System** — Collaborators can apply to opportunities. Founders can accept or reject applications from their dashboard.
+- **Stripe Payments** — Premium plan checkout is handled through Stripe.
+- **Admin Panel** — Admins get an overview with live stats (total users, startups, opportunities, revenue), can manage users and startups, view transactions, and block accounts.
+- **Authentication** — Sign up, sign in, and session management using Better Auth with MongoDB.
+- **Blocked User Protection** — If an admin blocks a user, that user gets redirected away from any dashboard page automatically.
+- **Responsive Design** — Works well on both desktop and mobile, with a collapsible navbar and adaptive layouts.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Tech Stack
+Next.js
+JavaScript
+Tailwind CSS
+Better Auth
+Stripe
+Chart.js
+Motion (Framer Motion)
+Gravity UI Icons
+HeroUI
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+**Live Site:** [https://startupforge-client.vercel.app]
 
-To learn more about Next.js, take a look at the following resources:
+**GitHub (Client):** [https://github.com/Farhan1471/startupforge-client]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**GitHub (Server):** [https://github.com/Farhan1471/startupforge-server]
