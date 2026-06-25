@@ -53,7 +53,6 @@ export default function StatsSection() {
                         <br />
                         find their dream positions.
                     </h2>
-                    <motion.p initial={{ scale: 0 }} animate={{ scale: 1 }}>On-site Jobs</motion.p>
                 </div>
 
                 {/* Stats Cards */}
