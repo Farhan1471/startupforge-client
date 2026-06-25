@@ -1,5 +1,5 @@
 import { getUserSession } from "@/lib/core/session";
-import { LayoutSideContentLeft, SquarePlus, PencilToSquare, Envelope, Gear, House, Factory, Person } from "@gravity-ui/icons";
+import { LayoutSideContentLeft, SquarePlus, PersonPencil, PencilToSquare, Envelope, TagDollar, House, Factory, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 
@@ -23,9 +23,9 @@ export async function DashboardSidebar() {
 
     const adminnavItems = [
         { icon: House, href: "/dashboard/admin", label: "Overview" },
-        { icon: PencilToSquare, href: "/dashboard/admin/manage_users", label: "Manage Users" },
+        { icon: PersonPencil, href: "/dashboard/admin/manage_users", label: "Manage Users" },
         { icon: PencilToSquare, href: "/dashboard/admin/manage_startups", label: "Manage Startups" },
-        { icon: Envelope, href: "/dashboard/admin/transactions", label: "Transactions" } 
+        { icon: TagDollar, href: "/dashboard/admin/transactions", label: "Transactions" } 
     ];
 
     const navLinksMap = {
